@@ -1,125 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 from pprint import pprint 
-import time
-import os
-import sys
-
 from random import randint
-import msvcrt
-import _thread 
-
-import multiprocessing 
-import time
-
-import terminal
-
-
-
-
-os.system('cls')
-
-
-
-terminal.move(0, 0)
-
-print (terminal.RED)
-print (u'this is red')
-print (terminal.RESET)
-
-terminal.move(0, 0)
-
-print (terminal.GREEN)
-print (u'this is red')
-print (terminal.RESET)
-
-
-exit()
-
-
-class bcolors:
-    Black      ="\033[0;30m"    # Black
-    Red        ="\033[0;31m"    # Red
-    Green      ="\033[0;32m"    # Green
-    Yellow     ="\033[0;33m"    # Yellow
-    Blue       ="\033[0;34m"    # Blue
-    Purple     ="\033[0;35m"    # Purple
-    Cyan       ="\033[0;36m"    # Cyan
-    White      ="\033[0;37m"    # White
-    
-    # Bold
-    BBlack     ="\033[1;30m"    # Black
-    BRed       ="\033[1;31m"    # Red
-    BGreen     ="\033[1;32m"    # Green
-    BYellow    ="\033[1;33m"    # Yellow
-    BBlue      ="\033[1;34m"    # Blue
-    BPurple    ="\033[1;35m"    # Purple
-    BCyan      ="\033[1;36m"    # Cyan
-    BWhite     ="\033[1;37m"    # White
-    
-    # Underline
-    UBlack     ="\033[4;30m"    # Black
-    URed       ="\033[4;31m"    # Red
-    UGreen     ="\033[4;32m"    # Green
-    UYellow    ="\033[4;33m"    # Yellow
-    UBlue      ="\033[4;34m"    # Blue
-    UPurple    ="\033[4;35m"    # Purple
-    UCyan      ="\033[4;36m"    # Cyan
-    UWhite     ="\033[4;37m"    # White
-    
-    # Background
-    On_Black   ="\033[40m"      # Black
-    On_Red     ="\033[41m"      # Red
-    On_Green   ="\033[42m"      # Green
-    On_Yellow  ="\033[43m"      # Yellow
-    On_Blue    ="\033[44m"      # Blue
-    On_Purple  ="\033[45m"      # Purple
-    On_Cyan    ="\033[46m"      # Cyan
-    On_White   ="\033[47m"      # White
-    
-    # High Intensty
-    IBlack     ="\033[0;90m"    # Black
-    IRed       ="\033[0;91m"    # Red
-    IGreen     ="\033[0;92m"    # Green
-    IYellow    ="\033[0;93m"    # Yellow
-    IBlue      ="\033[0;94m"    # Blue
-    IPurple    ="\033[0;95m"    # Purple
-    ICyan      ="\033[0;96m"    # Cyan
-    IWhite     ="\033[0;97m"    # White
-    
-    # Bold High Intensty
-    BIBlack    ="\033[1;90m"    # Black
-    BIRed      ="\033[1;91m"    # Red
-    BIGreen    ="\033[1;92m"    # Green
-    BIYellow   ="\033[1;93m"    # Yellow
-    BIBlue     ="\033[1;94m"    # Blue
-    BIPurple   ="\033[1;95m"    # Purple
-    BICyan     ="\033[1;96m"    # Cyan
-    BIWhite    ="\033[1;97m"    # White
-    
-    # High Intensty backgrounds
-    On_IBlack  ="\033[0;100m"   # Black
-    On_IRed    ="\033[0;101m"   # Red
-    On_IGreen  ="\033[0;102m"   # Green
-    On_IYellow ="\033[0;103m"   # Yellow
-    On_IBlue   ="\033[0;104m"   # Blue
-    On_IPurple ="\033[10;95m"   # Purple
-    On_ICyan   ="\033[0;106m"   # Cyan
-    On_IWhite  ="\033[0;107m"   # White
-    
-    ENDC = '\033[0m'
-
-
-
-
-
-
-
-
-
-
-
+from terminal import terminal
+import time, os, sys, msvcrt, _thread, multiprocessing, time
 
 class pytrix:
     
@@ -127,9 +13,6 @@ class pytrix:
         
         self.X=20
         self.Y=20
-        
-        """ self.X=10
-        self.Y=10 """
         
         self.px = 0
         self.py = 0
@@ -140,18 +23,20 @@ class pytrix:
         
         self.P = 0
         
+        self.terminal = terminal()
+        
         self.brick  = u'█'*2 
-        self.wall   = bcolors.Cyan +  u'█'*2 + bcolors.ENDC
-        self.blank  = bcolors.Black +  u'█'*2 + bcolors.ENDC
+        
+        self.wall  = self.terminal.setColor(self.brick, 'Cyan'  ) 
+        self.blank = self.terminal.setColor(self.brick, 'Black' ) 
         
         self.pices = {
-            #'squere' : [[0,1], [0,1]] 
             'O' : {
                 'up':{
                     0:[0,1],
                     1:[0,1]
                 },
-                'color':bcolors.Red
+                'color':"Red"
             }, 
             'I' : {
                 'up':{
@@ -160,7 +45,7 @@ class pytrix:
                     2:[0],
                     3:[0]
                 },
-                'color':bcolors.Green
+                'color':"Green"
             },
             'L' : {
                 'up':{
@@ -168,28 +53,28 @@ class pytrix:
                     1:[0],
                     2:[0,1],
                 },
-                'color':bcolors.Yellow
+                'color':"Yellow"
             },
             'Z' : {
                 'up':{
                     0:[0,1],
                     1:[1,2]
                 },
-                'color':bcolors.Blue
+                'color':"Blue"
             },
             'S' : {
                 'up':{
                     0:[2,3],
                     1:[1,2]
                 },
-                'color':bcolors.Purple
+                'color':"Magenta"
             },
             'T' : {
                 'up':{
                     0:[1,2,3],
                     1:[2]
                 },
-                'color':bcolors.White
+                'color':"White"
             }
             
             #'long'   :  ,
@@ -264,8 +149,9 @@ class pytrix:
         
         cenario+=("Pontos: " + str(self.P))
         
-        self.clear()
-        print(cenario)
+        self.terminal.printXY(cenario, 0, 0)
+        # self.clear()
+        #print(cenario)
         # print ("\x1b[31;4mHello\x1b[0m")
         
         # print ('A')
@@ -282,17 +168,18 @@ class pytrix:
         if self.px == 0 and self.py == 0:
             return
         
-        
         pice = self.pices[self.pt]
         
         for linha in pice['up']:
             for pedaco in pice['up'][linha]:
                 if self.bg[self.py+linha][self.px+pedaco] == self.blank:
-                    self.pc[self.py+linha][self.px+pedaco] = pice['color'] + self.brick + bcolors.ENDC
+                    #self.pc[self.py+linha][self.px+pedaco] = pice['color'] + self.brick + bcolors.ENDC
+                    self.pc[self.py+linha][self.px+pedaco] = self.terminal.setColor(self.brick, pice['color']) 
                 else:
                     for linha in pice['up']:
                         for pedaco in pice['up'][linha]:
-                            self.bg[self.py+linha-1][self.px+pedaco] = pice['color'] + self.brick + bcolors.ENDC
+                            #self.bg[self.py+linha-1][self.px+pedaco] = pice['color'] + self.brick + bcolors.ENDC
+                            self.bg[self.py+linha-1][self.px+pedaco] = self.terminal.setColor(self.brick, pice['color']) 
                     
                     self.verifyPontos()
                     self.novaPeca()
