@@ -10,7 +10,7 @@ import time, os, sys, msvcrt, _thread, multiprocessing, time
 
 
 
-
+'''
 keyBoard = {
     "backspace"    :  "8",
     "tab"          :  "9",
@@ -110,7 +110,7 @@ keyBoard = {
     "backslash"    : "220",
     "closebraket"  : "221"
 }
-
+'''
 
 
 
@@ -162,6 +162,9 @@ class pytrix:
         self.pc = {}
         
         self.P = 0
+        
+        self.originalClockTime = .6
+        self.clockTime = .6
         
         self.terminal = terminal()
         
@@ -230,16 +233,23 @@ class pytrix:
             }
         }
         
+        _thread.start_new_thread( self.teclado, () )
+        
         self.startCene()
         self.novaPeca()
         
-        _thread.start_new_thread( self.teclado, () )
         
     
     def teclado(self):
         while True:
             
+            
             key = msvcrt.getch()
+            
+            #print(key)
+            
+            if key == b'P':
+                self.clockTime = self.originalClockTime / 10
             
             if key == b'K':
                 self.px-=1
@@ -251,13 +261,13 @@ class pytrix:
                 self.rotate()
             
             elif key == b'\x1b':
-                quit()
+                pass
             
             else:
-                return 
+                continue 
             
             self.renderPice()
-            self.render()
+            #self.render()
             
         
     
@@ -314,12 +324,10 @@ class pytrix:
         for linha in pice[self.ps]:
             for pedaco in pice[self.ps][linha]:
                 if self.bg[self.py+linha][self.px+pedaco] == self.blank:
-                    #self.pc[self.py+linha][self.px+pedaco] = pice['color'] + self.brick + bcolors.ENDC
                     self.pc[self.py+linha][self.px+pedaco] = self.terminal.setColor(self.brick, pice['color']) 
                 else:
                     for linha in pice[self.ps]:
                         for pedaco in pice[self.ps][linha]:
-                            #self.bg[self.py+linha-1][self.px+pedaco] = pice['color'] + self.brick + bcolors.ENDC
                             self.bg[self.py+linha-1][self.px+pedaco] = self.terminal.setColor(self.brick, pice['color']) 
                     
                     self.verifyPontos()
@@ -348,7 +356,10 @@ class pytrix:
         
         self.ps = 'up'
         
+        
         self.px = int(self.X / 2)
+        
+        self.clockTime = self.originalClockTime
         
         self.py = 0
         
@@ -388,7 +399,7 @@ class pytrix:
             self.render()
             self.calcNext()
             # input('?')
-            time.sleep(.6)
+            time.sleep(self.clockTime)
             
 
 
