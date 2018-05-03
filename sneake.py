@@ -12,10 +12,17 @@ class sneaky(gamepy):
             "arrow_left"  : lambda *x : self.left(),
             "arrow_up"    : lambda *x : self.up(),
             "arrow_right" : lambda *x : self.right(),
-            "arrow_down"  : lambda *x : self.down()
+            "arrow_down"  : lambda *x : self.down(),
+            "esc"         : lambda *x : self.esc()
         })
         
-        self.clock()
+        self.setMatrix(10, 10, ['bg', 'comida', 'cobra'])
+        
+        self.setBorder(True)
+        
+        
+        
+        
         
     def up(self,):
         print('UP')
@@ -29,8 +36,12 @@ class sneaky(gamepy):
     def down(self,):
         print('DOWN')
         
+    def esc(self,):
+        print('DOWN')
+        
         
 if __name__ == '__main__':
     c = sneaky()
+    c.start()
     
     
