@@ -37,7 +37,7 @@ class sneaky(gamepy):
         print('DOWN')
         
     def esc(self,):
-        print('DOWN')
+        quit()
         
         
 if __name__ == '__main__':

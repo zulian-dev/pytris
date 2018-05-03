@@ -27,15 +27,19 @@ keyBoard_key_name = {
 class gamepy:
     def __init__(self,):
         
+        
+        self.terminal = terminal()
+        
         self.X = -1 # colunas
         self.Y = -1 # linhas
         # self.Z = -1 # profundidadde
-        self.Z = [] # profundidadde
+        self.Z = {} # profundidadde
         
         
         self.matrix=[]
         
         self.blank = '  '
+        self.blank = 'XX'
         
         
         #inicia o teclado 
@@ -90,36 +94,48 @@ class gamepy:
         self.hasBorder = hasBorder
     
     def createMatrix(self, ):
-        for y in range(0, self.Y):
-            self.matrix[y] = {}
-            for x in range(0, self.X):
-                # if x == 0 or x == self.X-1 or y == self.Y-1:
-                self.matrix[y][x] = self.blank
+        for layer in self.Z:
+            self.matrix[layer] = {}
+            for y in range(0, self.Y):
+                self.matrix[layer][y] = {}
+                for x in range(0, self.X):
+                    self.matrix[layer][y][x] = self.blank
+                    
+                    # if x == 0 or x == self.X-1 or y == self.Y-1:
+                    
                 
+            
+        
+    
+    def getLayer(self, layer):
+        return self.matrix[layer]
+    
+    
+    def editLayer(self,layer):
+        pass
+    
     
     
     def render (self):
         cenario=''
-        
         cenario+="\n"
-        
         for y in range(0, self.Y):
             for x in range(0, self.X):
-                
-                if self.pc[y][x] != self.blank:
-                    cenario+=self.pc[y][x]
-                    self.pc[y][x] = self.blank
-                
-                else:
-                    cenario+=self.bg[y][x]
-                
-            cenario+=("\n")
-        
-        cenario += "Pontos: " + str(self.P)
-        
+                for layer in self.Z:
+                    
+                    char = str(self.matrix[layer][y][x])
+                    
+                    peca = self.blank
+                    
+                    if char != self.blank:
+                        peca = char
+                    
+                    
+                    cenario += peca
+            cenario += "\n"
+        #cenario += "Pontos: " + str()
         self.terminal.printXY(cenario, 0, 0)
-        
-
+    
     
     
     
@@ -133,7 +149,20 @@ class gamepy:
     
     
     def clock(self,):
+        
+        clocks = 0
+        
         while True:
+            
+            
+            self.render()
+            
+            if (clocks==5):
+                quit()
+            
+            clocks+=1
+            
+            print(clocks)
             
             time.sleep(1)
             
