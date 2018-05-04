@@ -143,7 +143,8 @@ class gamepy:
     
     
     
-    def createObject(self, _object, layer)
+    def createObject(self, _object, layer):
+        pass
     
     
     
