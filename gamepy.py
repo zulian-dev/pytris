@@ -1,17 +1,14 @@
 from pprint import pprint 
 from random import randint
-from terminal import terminal
 import time, os, sys, msvcrt, _thread, multiprocessing, time
 
+from terminal import terminal
+import keyboard
 
 
-keyBoard = {
-    "arrow_left"    : b'K'   , 
-    "arrow_up"      : b'H'   , 
-    "arrow_right"   : b'M'   , 
-    "arrow_down"    : b'P'   , 
-    "esc"           : b'\x03'  
-}
+
+
+
 
 
 '''
@@ -36,10 +33,11 @@ class gamepy:
         self.Z = {} # profundidadde
         
         
-        self.matrix=[]
+        self.matrix={}
         
         self.blank = '  '
-        self.blank = 'XX'
+        #self.blank = 'XX'
+        self.blank = u'█'*2 
         
         
         #inicia o teclado 
@@ -52,8 +50,8 @@ class gamepy:
         
         
     def prepareKeyboard(self,):
-        for name in keyBoard:
-            key = keyBoard[name]
+        for name in keyboard.keys:
+            key = keyboard.keys[name]
             self.keyBoard_key_name[key] = name
             self.keyBoard_name_key[name] = key
         _thread.start_new_thread(self.teclado, ())
@@ -62,6 +60,8 @@ class gamepy:
     def teclado(self,):
         while True:
             key = msvcrt.getch()
+            print(key)
+            
             if key in self.declaredKeys:
                 name = self.keyBoard_key_name[key]
                 self.keys[name]()
@@ -89,6 +89,7 @@ class gamepy:
         self.X = X
         self.Y = Y
         self.Z = Z
+        self.createMatrix()
     
     def setBorder(self, hasBorder):
         self.hasBorder = hasBorder
@@ -121,17 +122,15 @@ class gamepy:
         cenario+="\n"
         for y in range(0, self.Y):
             for x in range(0, self.X):
+                
+                peca = self.blank
+                
                 for layer in self.Z:
-                    
                     char = str(self.matrix[layer][y][x])
-                    
-                    peca = self.blank
-                    
                     if char != self.blank:
                         peca = char
                     
-                    
-                    cenario += peca
+                cenario += peca
             cenario += "\n"
         #cenario += "Pontos: " + str()
         self.terminal.printXY(cenario, 0, 0)
@@ -144,6 +143,8 @@ class gamepy:
     
     
     
+    def createObject(self, _object, layer)
+    
     
     
     
@@ -154,10 +155,9 @@ class gamepy:
         
         while True:
             
-            
             self.render()
             
-            if (clocks==5):
+            if (clocks==10):
                 quit()
             
             clocks+=1
@@ -173,3 +173,6 @@ class gamepy:
         self.clock()
     
 
+if __name__ == '__main__':
+    engine = gamepy()
+    engine.start()
