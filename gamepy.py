@@ -27,17 +27,21 @@ class gamepy:
         
         self.terminal = terminal()
         
-        self.X = -1 # colunas
-        self.Y = -1 # linhas
-        # self.Z = -1 # profundidadde
-        self.Z = {} # profundidadde
-        
         
         self.matrix={}
         
+        self.X = -1 # colunas
+        self.Y = -1 # linhas
+        self.Z = {} # profundidadde
+        
         self.blank = '  '
-        #self.blank = 'XX'
-        self.blank = u'█'*2 
+        self.brick = u'█'*2 
+        
+        self.clockTime = 1
+        
+        
+        self.objectsList={}
+        self.colisions={}
         
         
         #inicia o teclado 
@@ -77,12 +81,11 @@ class gamepy:
             self.declaredKeys.append(numberKey)
             
         
-    
-    
-    
-    
-    
-    
+    def setColision(self, layer1, layer2, fn):
+        colisionName1 = str(layer1) + '-' + str(layer2)
+        colisionName2 = str(layer2) + '-' + str(layer1)
+        self.colisions[colisionName1] = fn
+        self.colisions[colisionName2] = fn
     
     
     def setMatrix(self, X, Y, Z):
@@ -143,18 +146,56 @@ class gamepy:
     
     
     
-    def createObject(self, _object, layer):
-        pass
+    def createObject(self, obj):
+        layer = obj['layer']
+        #name = obj.name
+        self.objectsList[layer] = obj
     
     
+    def nextFrame(self):
+        
+        ocupedX={}
+        ocupedY={}
+        
+        
+        for layer in self.objectsList:
+            
+            if layer in self.matrix:
+                self.clearLayer(layer)
+                
+                objx     = self.objectsList[layer]['X']
+                objy     = self.objectsList[layer]['Y']
+                objcolor = self.objectsList[layer]['color']
+                
+                #print(self.setColor('X', objcolor))
+                self.matrix[layer][objy][objx] = self.setColor(self.brick, objcolor)
+                
+                if objx in ocupedX and objy in ocupedY:
+                    pass
+                else :
+                    objx
+                    objy
+                    ocupedX
+                    ocupedY
+                
+            # self.matrix[layer][y][x]
+            
     
+    def clearLayer(self, layer):
+        for y in range(0, self.Y):
+            for x in range(0, self.X):
+                self.matrix[layer][y][x] = self.blank
+        
+
     
-    
+
     def clock(self,):
         
         clocks = 0
         
         while True:
+            
+            self.nextFrame()
             
             self.render()
             
@@ -165,11 +206,13 @@ class gamepy:
             
             print(clocks)
             
-            time.sleep(1)
+            time.sleep(self.clockTime)
             
         
+    def setColor(self, text, color):
+        return self.terminal.setColor(text, color)
     
-    
+
     def start(self,):
         self.clock()
     
