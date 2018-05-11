@@ -48,16 +48,16 @@ class sneaky(gamepy):
     def createObjs(self):
         # cobra 
         self.createObject({ 
-            'X':5,
-            'Y':5,
+            'X': 5 ,
+            'Y': 5 ,
             'color':'red',
             'layer': 'cobra'
         })
         
         #comida
         self.createObject({ 
-            'X':10,
-            'Y':5,
+            'X':10 ,
+            'Y': 5 ,
             'color':'blue',
             'layer': 'comida'
         })
